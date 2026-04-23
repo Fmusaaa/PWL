@@ -1,4 +1,4 @@
-<? $this->extend('layout') ?>
-<?= $this->section('content') ?>
+<?php $this->extend('layout') ?>
+<?php $this->section('content') ?>
 ini halaman keranjang<br>
-<?= $this->endSection() ?>
+<?php $this->endSection() ?>

@@ -1,4 +1,5 @@
-<?= $this->extend('layout') ?>
-<?= $this->section('content') ?>
+<?php $this->extend('layout') ?>
+<?php $this->section('content') ?>
+
 ini halaman produk<br>
-<?= $this->endSection() ?>
+<?php $this->endSection() ?>

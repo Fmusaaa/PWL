@@ -1,5 +1,5 @@
-<?= $this->extend('layout') ?>
-<?= $this->section('content') ?>
+<?php $this->extend('layout') ?>
+<?php $this->section('content') ?>
               <!-- Table with stripped rows -->
               <table class="table datatable">
                 <thead>
@@ -50,4 +50,4 @@
                 </tbody>
               </table>
               <!-- End Table with stripped rows -->
-               <?= $this->endSection() ?>
+               <?php $this->endSection() ?>
