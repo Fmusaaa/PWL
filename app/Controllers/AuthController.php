@@ -17,7 +17,7 @@ public function login()
         $username = $this->request->getVar('username');
         $password = $this->request->getVar('password');
 
-        $dataUser = ['username' => 'musa', 'password' => '202cb962ac59075b964b07152d234b70', 'role' => 'admin', 'email' => 'musafadhlillah@gmail.com', 'nama' => 'Fadhlillah Musa ulil Albab']; // passw 123
+        $dataUser = ['username' => 'Devin', 'password' => '202cb962ac59075b964b07152d234b70', 'role' => 'admin', 'email' => 'devin@gmail.com', 'nama' => 'Devin Pandu']; // passw 123
 
         if ($username == $dataUser['username']) {
             if (md5($password) == $dataUser['password']) {

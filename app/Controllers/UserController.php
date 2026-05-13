@@ -3,12 +3,13 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use CodeIgniter\HTTP\ResponseInterface;
 
 class UserController extends BaseController
 {
-    public function profile()
+    public function index()
     {
-        $data = [
+$data = [
             'username'  => session()->get('username')  ?? '-',
             'nama'      => session()->get('nama')       ?? session()->get('username') ?? '-',
             'role'      => session()->get('role')       ?? '-',
@@ -16,7 +17,7 @@ class UserController extends BaseController
             'loginTime' => session()->get('loginTime')  ?? '-',
             'isLoggedIn'=> session()->get('isLoggedIn') ?? false,
         ];
-
-        return view('v_profile', $data);
+return view('v_profile', $data);    
+    return view('v_profile');
     }
 }
