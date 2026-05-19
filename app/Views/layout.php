@@ -11,7 +11,7 @@ if(uri_string()!=""){
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-<title> Pejabat Devin <?php echo $hlm ?></title>
+<title> Pejabat Ferrari <?php echo $hlm ?></title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -72,7 +72,7 @@ if(uri_string()!=""){
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Pejabat Devin</h5>
+              <h5 class="card-title">Pejabat Ferrari</h5>
 
            <?= $this->renderSection('content') ?>
 
