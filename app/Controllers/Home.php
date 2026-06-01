@@ -6,11 +6,17 @@ use App\Models\ProductModel;
 
 class Home extends BaseController
 {
+    protected $productModel;
+
+public function __construct()
+{
+    helper(['number', 'form']);
+    $this->productModel = new ProductModel();
+}
     public function index(): string
     {
-        $model = new ProductModel();
         $data = [
-            'products' => $model->findAll(),
+            'products' => $this->productModel->findAll(),
         ];
         return view('v_home', $data);
     }
