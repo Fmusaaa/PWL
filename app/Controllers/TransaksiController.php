@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use CodeIgniter\HTTP\ResponseInterface;
 use App\Services\RajaOngkirService;
 
 use App\Models\TransactionModel;
@@ -96,7 +95,7 @@ class TransaksiController extends BaseController
     {
         $service = new RajaOngkirService();
         $response = $service->getDestination('semarang');
-        $response2 = $service->getCost('64999', '65042', '1000', 'jne');
+        $response2 = $service->getCost('64999', '65042', 1000, 'jne');
 
         $data = [
             'items' => $this->cart->contents(),
@@ -137,7 +136,7 @@ class TransaksiController extends BaseController
     {
         $origin = '64999';
         $destination = $this->request->getGet('destination');
-        $weight = '1000';
+        $weight = 1000;
         $courier = 'jne';
 
         $service = new RajaOngkirService();
