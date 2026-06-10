@@ -4,15 +4,15 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class ProductModel extends Model
+class TransactionModel extends Model
 {
-    protected $table            = 'product';
+    protected $table            = 'transaction'; //disesuaikan
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = false;
+    protected $useSoftDeletes   = true; //disesuaikan
     protected $protectFields    = true;
-    protected $allowedFields    = ['nama','harga','jumlah','foto']; //disesuaikan
+    protected $allowedFields    = ['username', 'total_harga', 'alamat', 'ongkir', 'status']; //disesuaikan
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -21,7 +21,7 @@ class ProductModel extends Model
     protected array $castHandlers = [];
 
     // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = true; //disesuaikan
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
@@ -30,7 +30,7 @@ class ProductModel extends Model
     // Validation
     protected $validationRules      = [];
     protected $validationMessages   = [];
-    protected $skipValidation       = false; 
+    protected $skipValidation       = true; //disesuaikan
     protected $cleanValidationRules = true;
 
     // Callbacks
