@@ -15,10 +15,27 @@ class TransaksiController extends BaseController
     protected $transactionDetailModel;
     public function __construct()
     {
-        helper(['number', 'form']);
+        helper(['number', 'form', 'DiskonHelper']);
         $this->cart = service('cart');
         $this->transactionModel = new TransactionModel();
         $this->transactionDetailModel = new TransactionDetailModel();
+    }
+
+    private function hitungPromo($totalHarga, $voucherCode = ''): array
+    {
+        $voucherCode = strtoupper(trim((string) $voucherCode));
+        $biayaJasa = hitung_biaya_jasa($totalHarga);
+        $diskonVoucher = hitung_diskon_voucher($totalHarga, $voucherCode);
+        $freeMouse = hitung_free_mouse($totalHarga);
+
+        return [
+            'biaya_jasa' => $biayaJasa,
+            'voucher_code' => $voucherCode !== '' ? $voucherCode : null,
+            'voucher_persen' => hitung_persen_voucher($voucherCode),
+            'diskon_voucher' => $diskonVoucher,
+            'free_mouse' => $freeMouse,
+            'subtotal_promo' => $totalHarga + $biayaJasa - $diskonVoucher - $freeMouse,
+        ];
     }
     public function index()
     {
@@ -97,9 +114,18 @@ class TransaksiController extends BaseController
         $response = $service->getDestination('semarang');
         $response2 = $service->getCost('64999', '65042', 1000, 'jne');
 
+        $total = $this->cart->total();
+        $promo = $this->hitungPromo($total);
+
         $data = [
             'items' => $this->cart->contents(),
-            'total' => $this->cart->total(),
+            'total' => $total,
+            'biaya_jasa' => $promo['biaya_jasa'],
+            'voucher_code' => $promo['voucher_code'],
+            'voucher_persen' => $promo['voucher_persen'],
+            'diskon_voucher' => $promo['diskon_voucher'],
+            'free_mouse' => $promo['free_mouse'],
+            'subtotal_promo' => $promo['subtotal_promo'],
             'response' => $response,
             'response2' => $response2
         ];
@@ -173,12 +199,17 @@ class TransaksiController extends BaseController
         }
 
         $ongkir = (int) $this->request->getPost('ongkir');
+        $promo = $this->hitungPromo($subtotal, $this->request->getPost('voucher_code'));
 
         $transaction = [
             'username'    => $this->request->getPost('username'),
             'alamat'      => $this->request->getPost('alamat'),
             'ongkir'      => $ongkir,
-            'total_harga' => $subtotal + $ongkir,
+            'biaya_jasa'  => $promo['biaya_jasa'],
+            'voucher_code' => $promo['voucher_code'],
+            'diskon_voucher' => $promo['diskon_voucher'],
+            'free_mouse' => $promo['free_mouse'],
+            'total_harga' => $promo['subtotal_promo'] + $ongkir,
             'status'      => 0,
         ];
 

@@ -40,5 +40,4 @@
             </a>
         </li><!-- End Profile Nav --> 
     </ul>
-<
 </aside><!-- End Sidebar-->

@@ -48,6 +48,16 @@
             ]) ?>
         </div>
         <div class="col-12">
+            <?= form_label('Kode Voucher', 'voucher_code', ['class' => 'form-label']) ?>
+            <?= form_input([
+                'name'        => 'voucher_code',
+                'id'          => 'voucher_code',
+                'class'       => 'form-control',
+                'placeholder' => 'PROMO2025 / PROMO2026 / AKHIRTAHUN'
+            ]) ?>
+            <small class="text-muted">Tersedia: PROMO2025 (10%), PROMO2026 (15%), AKHIRTAHUN (25%)</small>
+        </div>
+        <div class="col-12">
             <?= form_submit(
                 'submit',
                 'Buat Pesanan',
@@ -89,8 +99,34 @@
                 </tr>
                 <tr>
                     <td colspan="2"></td>
-                    <td>Total</td>
-                    <td><span id="total"><?= number_to_currency($total, 'IDR') ?></span></td>
+                    <td class="text-danger">Diskon Voucher</td>
+                    <td class="text-danger">
+                        <span id="diskon_voucher">-<?= number_to_currency($diskon_voucher, 'IDR') ?></span>
+                        <br>
+                        (<span id="voucher_persen"><?= $voucher_persen ?></span>%)
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td>Biaya Jasa</td>
+                    <td><?= number_to_currency($biaya_jasa, 'IDR') ?></td>
+                </tr>
+                <?php if ($free_mouse > 0) : ?>
+                <tr>
+                    <td colspan="2"></td>
+                    <td class="text-success">Free Mouse</td>
+                    <td class="text-success">-<?= number_to_currency($free_mouse, 'IDR') ?></td>
+                </tr>
+                <?php endif; ?>
+                <tr>
+                    <td colspan="2"></td>
+                    <td class="text-primary">Subtotal Promo</td>
+                    <td class="text-primary"><strong><span id="subtotal_promo"><?= number_to_currency($subtotal_promo, 'IDR') ?></span></strong></td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td><strong>Grand Total (incl. Ongkir)</strong></td>
+                    <td><strong><span id="total"><?= number_to_currency($subtotal_promo, 'IDR') ?></span></strong></td>
                 </tr>
             </tbody>
         </table>
@@ -102,13 +138,31 @@
     $(document).ready(function() {
         let ongkir = 0;
         let subtotal = <?= $total ?>;
+        let biayaJasa = <?= $biaya_jasa ?>;
+        let freeMouse = <?= $free_mouse ?>;
+        let voucherPromo = {
+            PROMO2025: 10,
+            PROMO2026: 15,
+            AKHIRTAHUN: 25
+        };
         hitungTotal();
 
+        function formatRupiah(nilai) {
+            return `IDR ${Math.round(nilai).toLocaleString('en-US')}`;
+        }
+
         function hitungTotal() {
-            let total = subtotal + ongkir;
+            let kodeVoucher = $("#voucher_code").val().trim().toUpperCase();
+            let voucherPersen = voucherPromo[kodeVoucher] || 0;
+            let diskonVoucher = Math.round((voucherPersen / 100) * subtotal);
+            let subtotalPromo = subtotal + biayaJasa - diskonVoucher - freeMouse;
+            let total = subtotalPromo + ongkir;
 
             $("#ongkir").val(ongkir);
-            $("#total").text(`IDR ${total.toLocaleString('id-ID')}`);
+            $("#diskon_voucher").text(`-${formatRupiah(diskonVoucher)}`);
+            $("#voucher_persen").text(voucherPersen);
+            $("#subtotal_promo").text(formatRupiah(subtotalPromo));
+            $("#total").text(formatRupiah(total));
             $("#total_harga").val(total);
         }
 
@@ -158,7 +212,11 @@
         });
 
         $("#layanan").on('change', function() {
-            ongkir = parseInt($(this).val());
+            ongkir = parseInt($(this).val(), 10) || 0;
+            hitungTotal();
+        });
+
+        $("#voucher_code").on('keyup change', function() {
             hitungTotal();
         });
     });
