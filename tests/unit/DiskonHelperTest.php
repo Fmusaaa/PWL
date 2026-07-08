@@ -23,21 +23,21 @@ final class DiskonHelperTest extends CIUnitTestCase
 
     public function testDiskonVoucherSesuaiKodePromo(): void
     {
-        $this->assertSame(10, hitung_persen_voucher('PROMO2025'));
-        $this->assertSame(15, hitung_persen_voucher('promo2026'));
-        $this->assertSame(25, hitung_persen_voucher(' AKHIRTAHUN '));
-        $this->assertSame(0, hitung_persen_voucher('KODESALAH'));
+        $this->assertEquals(10, hitung_persen_voucher('PROMO2025'));
+        $this->assertEquals(15, hitung_persen_voucher('promo2026'));
+        $this->assertEquals(25, hitung_persen_voucher(' AKHIRTAHUN '));
+        $this->assertEquals(0, hitung_persen_voucher('KODESALAH'));
 
-        $this->assertSame(1_379_800.0, hitung_diskon_voucher(13_798_000, 'PROMO2025'));
-        $this->assertSame(2_669_700.0, hitung_diskon_voucher(17_798_000, 'PROMO2026'));
-        $this->assertSame(5_449_500.0, hitung_diskon_voucher(21_798_000, 'AKHIRTAHUN'));
-        $this->assertSame(0.0, hitung_diskon_voucher(10_899_000, 'KODESALAH'));
+        $this->assertEquals(1_379_800.0, hitung_diskon_voucher(13_798_000, 'PROMO2025'));
+        $this->assertEquals(2_669_700.0, hitung_diskon_voucher(17_798_000, 'PROMO2026'));
+        $this->assertEquals(5_449_500.0, hitung_diskon_voucher(21_798_000, 'AKHIRTAHUN'));
+        $this->assertEquals(0.0, hitung_diskon_voucher(10_899_000, 'KODESALAH'));
     }
 
     public function testFreeMouseHanyaUntukTotalDiAtasLimaBelasJuta(): void
     {
-        $this->assertSame(0.0, hitung_free_mouse(15_000_000));
-        $this->assertSame(150_000.0, hitung_free_mouse(15_000_001));
+        $this->assertEquals(0.0, hitung_free_mouse(15_000_000));
+        $this->assertEquals(150_000.0, hitung_free_mouse(15_000_001));
     }
 
     public function testSubtotalPromoSesuaiRumusSoal(): void
@@ -57,7 +57,7 @@ final class DiskonHelperTest extends CIUnitTestCase
                 - hitung_diskon_voucher($total, $voucher)
                 - hitung_free_mouse($total);
 
-            $this->assertSame($expected, $subtotalPromo);
+            $this->assertEquals($expected, $subtotalPromo);
         }
     }
 }
